@@ -1,0 +1,40 @@
+name: Stock Signal Alert
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # 5분마다 실행 (UTC 기준, GitHub 서버 상황에 따라 몇 분 지연될 수 있음)
+  workflow_dispatch: {}       # Actions 탭에서 수동으로도 실행 가능
+
+permissions:
+  contents: write            # signal_state.json 을 다시 커밋하기 위해 필요
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: 신호 체크 실행
+        env:
+          KIS_APP_KEY: ${{ secrets.KIS_APP_KEY }}
+          KIS_APP_SECRET: ${{ secrets.KIS_APP_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python stock_signal_alert_kis.py
+
+      - name: 신호 상태(signal_state.json) 저장소에 반영
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add signal_state.json
+          git diff --staged --quiet || git commit -m "update signal state [skip ci]"
+          git push
