@@ -1,1 +1,1 @@
-{"삼성전자": ["rsi_oversold"], "SK하이닉스": ["triangle_down", "rsi_oversold", "double_top", "triple_top"], "티애엘": [], "포스코인터내셔널": ["triple_top", "rising_wedge", "double_top", "box_support"], "펩트론": [], "애플": ["box_resistance", "rsi_overbought"], "테슬라": []}
+{"삼성전자": ["rsi_oversold"], "SK하이닉스": ["rsi_oversold", "triangle_down", "double_top", "triple_top"], "티애엘": [], "포스코인터내셔널": ["box_support", "double_top", "triple_top", "rising_wedge"], "펩트론": [], "애플": ["rsi_overbought", "box_resistance"], "테슬라": []}
